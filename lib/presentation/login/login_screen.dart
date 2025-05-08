@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -8,7 +9,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Text(
-          'login.welcome',
+          'login.welcome'.tr(), //
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
         ),
       ),

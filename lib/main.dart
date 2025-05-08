@@ -12,7 +12,7 @@ void main() async {
         Locale('ko', 'KR'),
       ],
       path: 'assets/translations',
-      fallbackLocale: Locale('ko', 'KR'),
+      fallbackLocale: Locale('en', 'US'),
       child: MyApp(),
     ),
   );
