@@ -3,7 +3,7 @@
     "welcome": "어서오세요",
     "login": "로그인",
     "orUse": "또는",
-    "Sign in with": "{sso}로 로그인"
+    "signinwith": "{sso}로 로그인"
   },
   "newsList": {
     "hotTopic": "뜨거운 주제",

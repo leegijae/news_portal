@@ -8,7 +8,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Text(
-          'login.welceom',
+          'login.welcome',
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
         ),
       ),

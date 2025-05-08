@@ -3,7 +3,7 @@
     "welcome": "welcome",
     "login": "Login",
     "orUse": "Or use",
-    "SigninWith": "Sign in with {sso}"
+    "signinWith": "Sign in with {sso}"
   },
   "newsList": {
     "hotTopic": "Hot Topic",
