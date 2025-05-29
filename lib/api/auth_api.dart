@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:easy_extension/easy_extension.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_portal/api/api_config.dart';
 import 'package:news_portal/api/models/Auth.dart';
@@ -20,16 +19,19 @@ class AuthApi {
           onTimeout: () {
             return http.Response('timeout', 500);
           },
-        );
+        )
+        .catchError((e) {
+          Log.red(e);
+          return http.Response('$e', 400);
+        });
+
     final statusCode = result.statusCode;
+
+    if (statusCode != 200) return null;
+
     final body = result.body;
     final data = jsonDecode(body);
     final auth = Auth.fromMap(data);
-
-    Log.green(auth);
-
-    Log.blue('Auth 생성 완료');
-
     return auth;
   }
 }

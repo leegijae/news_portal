@@ -1,8 +1,10 @@
 import 'package:easy_extension/easy_extension.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:news_portal/api/auth_api.dart';
+import 'package:news_portal/app/router/app_router.dart';
 import 'package:news_portal/app/translations/app_trans.dart';
 import 'package:news_portal/presentation/widgets/app_logo.dart';
 import 'package:news_portal/presentation/widgets/app_scaffold.dart';
@@ -25,22 +27,26 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void onLogin() {
-    //TODO 이메일,페스워드 가져오기
+  void onLogin() async {
     final email = _emailController.text;
     final password = _passwordController.text;
-    debugPrint('이메일:$email');
-    debugPrint('비번:$password');
 
-    AuthApi.login(email: email, password: password);
+    final auth = await AuthApi.login(email: email, password: password);
+
+    if (auth == null) return;
+    if (!mounted) return;
+
+    context.goNamed(AppRoute.newsList.name);
   }
 
   TextField _textField({
     required TextEditingController controller,
     required String hintText,
+    bool obscure = false,
   }) {
     return TextField(
       controller: controller,
+      obscureText: obscure,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: hintText,
@@ -53,50 +59,53 @@ class _LoginScreenState extends State<LoginScreen> {
     return AppScaffold(
       child: Padding(
         padding: const EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AppLogo(),
-            Container(
-              height: 250,
-              alignment: Alignment.center,
-              child: Text(
-                AppTrans.login.welcome.tr(),
-                style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AppLogo(),
+              Container(
+                height: 250,
+                alignment: Alignment.center,
+                child: Text(
+                  AppTrans.login.welcome.tr(),
+                  style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            _textField(
-              controller: _emailController,
-              hintText: AppTrans.login.email.tr(),
-            ),
-            _textField(
-              controller: _passwordController,
-              hintText: AppTrans.login.password.tr(),
-            ),
-            20.heightBox,
-            SizedBox(
-              height: 55,
-              child: ElevatedButton(
-                onPressed: onLogin,
-                child: Text(AppTrans.login.login.tr()),
+              _textField(
+                controller: _emailController,
+                obscure: true,
+                hintText: AppTrans.login.email.tr(),
               ),
-            ),
-            Container(
-              height: 70,
-              alignment: Alignment.center,
-              child: Row(
-                spacing: 10,
-                children: [
-                  Expanded(child: Divider()),
-                  Text(AppTrans.login.orUse.tr()),
-                  Expanded(child: Divider()),
-                ],
+              _textField(
+                controller: _passwordController,
+                hintText: AppTrans.login.password.tr(),
               ),
-            ),
-            _buildSsoButton('Google'),
-            10.heightBox,
-            _buildSsoButton('Apple'),
-          ],
+              20.heightBox,
+              SizedBox(
+                height: 55,
+                child: ElevatedButton(
+                  onPressed: onLogin,
+                  child: Text(AppTrans.login.login.tr()),
+                ),
+              ),
+              Container(
+                height: 70,
+                alignment: Alignment.center,
+                child: Row(
+                  spacing: 10,
+                  children: [
+                    Expanded(child: Divider()),
+                    Text(AppTrans.login.orUse.tr()),
+                    Expanded(child: Divider()),
+                  ],
+                ),
+              ),
+              _buildSsoButton('Google'),
+              10.heightBox,
+              _buildSsoButton('Apple'),
+            ],
+          ),
         ),
       ),
     );
